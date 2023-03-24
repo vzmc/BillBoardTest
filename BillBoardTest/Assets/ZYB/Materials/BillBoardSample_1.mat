@@ -10,7 +10,8 @@ Material:
   m_Name: BillBoardSample_1
   m_Shader: {fileID: 4800000, guid: 1b6f451027544d845a7e6b5234264335, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _BILLBOARD_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -21,7 +22,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d4356e946cdc9a64299312caafb3eb51, type: 3}
+        m_Texture: {fileID: 2800000, guid: e2650bd4098b0294f8d2be2d77f46140, type: 3}
         m_Scale: {x: 8, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
@@ -31,8 +32,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _AffectedByScale: 0
-    - _BillBoard: 0
+    - _BillBoard: 1
     - _Dis: 0
+    - _Distance: 0.1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

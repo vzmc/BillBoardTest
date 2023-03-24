@@ -10,7 +10,7 @@ namespace ZYB.Scripts
         public int heightSegments = 1;  // 縦分割数
         public float radius = 1f;       // 半径
     
-        private const string assetPath = "Assets/BeltMesh.asset";
+        private const string assetPath = "Assets/ZYB/Model/BeltMesh.asset";
 
         private float AngleStep => 2 * Mathf.PI / radialSegments;
         private float Height => radius * Mathf.Sin(AngleStep / 2) * 2;  // Quadの高さを正方形にするように半径に応じて計算
