@@ -59,11 +59,11 @@ namespace ZYB.Scripts
             
                 // rootが存在する時、頂点のオブジェクト空間座標をroot座標系に変換する
                 // todo: うまくいってない
-                if (root != null)
-                {
-                    var vertexWS = transform.TransformPoint(vertexOS);
-                    vertexOS = root.InverseTransformPoint(vertexWS);
-                }
+                // if (root != null)
+                // {
+                //     var vertexWS = transform.TransformPoint(vertexOS);
+                //     vertexOS = root.InverseTransformPoint(vertexWS);
+                // }
             
                 tempVector += vertexOS;
                 if ((i + 1) % VertexCountPerQuad == 0)

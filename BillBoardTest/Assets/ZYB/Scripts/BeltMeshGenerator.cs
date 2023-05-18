@@ -6,7 +6,7 @@ namespace ZYB.Scripts
 {
     public class BeltMeshGenerator : MonoBehaviour
     {
-        public int radialSegments = 8;  // 横分割数
+        public int radialSegments = 12;  // 横分割数
         public int heightSegments = 1;  // 縦分割数
         public float radius = 1f;       // 半径
     
@@ -35,7 +35,7 @@ namespace ZYB.Scripts
         private Mesh GenerateBeltMesh()
         {
             Mesh mesh = new Mesh();
-
+            
             int vertexCount = (radialSegments + 1) * (heightSegments + 1);
             Vector3[] vertices = new Vector3[vertexCount];
             Vector2[] uv = new Vector2[vertexCount];
@@ -43,6 +43,7 @@ namespace ZYB.Scripts
 
             float angleStep = AngleStep;
             float heightStep = Height / heightSegments;
+            
             for (int j = 0, index = 0, triIndex = 0; j <= heightSegments; j++)
             {
                 for (int i = 0; i <= radialSegments; i++, index++)
@@ -52,7 +53,7 @@ namespace ZYB.Scripts
                         radius * Mathf.Cos(angle),
                         (j - 0.5f) * heightStep,
                         radius * Mathf.Sin(angle)
-                    ) + offset;
+                    );　//+ offset
                     uv[index] = new Vector2((float)i / radialSegments, (float)j / heightSegments);
 
                     if (i < radialSegments && j < heightSegments)

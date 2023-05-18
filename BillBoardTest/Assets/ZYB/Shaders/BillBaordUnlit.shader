@@ -13,7 +13,7 @@ Shader "ZYB/BillBaordUnlit"
     SubShader
     {
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
-        Cull Off
+        Cull off
         
         Pass
         {
@@ -56,19 +56,23 @@ Shader "ZYB/BillBaordUnlit"
             // 頂点座標をQuad中心座標系に変換し、Quad中心座標系での頂点座標を求める(頂点と中心の差分ベクトル)
             float3 GetOffsetFromQuadCenter(float3 vertex, float3 quadCenter, float3 quadForward, float3 quadUp, float3 quadRight)
             {
-                float3x3 rotateMatrix = float3x3(
-                    quadRight.x, quadUp.x, quadForward.x,
-                    quadRight.y, quadUp.y, quadForward.y,
-                    quadRight.z, quadUp.z, quadForward.z
-                );
-
-                float3 moveVector = mul(rotateMatrix, -quadCenter);
-                float4x4 quadCoordsMatrix = float4x4(
-                    rotateMatrix._m00, rotateMatrix._m01, rotateMatrix._m02, moveVector.x,
-                    rotateMatrix._m10, rotateMatrix._m11, rotateMatrix._m12, moveVector.y,
-                    rotateMatrix._m20, rotateMatrix._m21, rotateMatrix._m22, moveVector.z,
+                float4x4 rotateMatrix = float4x4(
+                    quadRight.x, quadUp.x, quadForward.x, 0,
+                    quadRight.y, quadUp.y, quadForward.y, 0,
+                    quadRight.z, quadUp.z, quadForward.z, 0,
                     0, 0, 0, 1
                 );
+
+                rotateMatrix = transpose(rotateMatrix);
+
+                float4x4 moveMatrix = float4x4(
+                    1, 0, 0, -quadCenter.x,
+                    0, 1, 0, -quadCenter.y,
+                    0, 0, 1, -quadCenter.z,
+                    0, 0, 0, 1
+                );
+
+                float4x4 quadCoordsMatrix = mul(rotateMatrix, moveMatrix);
 
                 float3 offset = mul(quadCoordsMatrix, float4(vertex, 1)).xyz;
                 return offset;
@@ -141,5 +145,67 @@ Shader "ZYB/BillBaordUnlit"
             }
             ENDHLSL
         }
+        
+//        Pass
+//        {
+//            Name "DepthOnly"
+//            Tags{"LightMode" = "DepthOnly"}
+//
+//            ZWrite On
+//            ColorMask 0
+//
+//            HLSLPROGRAM
+//            #pragma exclude_renderers gles gles3 glcore
+//            #pragma target 4.5
+//
+//            #pragma vertex DepthOnlyVertex
+//            #pragma fragment DepthOnlyFragment
+//
+//            // -------------------------------------
+//            // Material Keywords
+//            #pragma shader_feature_local_fragment _ALPHATEST_ON
+//
+//            //--------------------------------------
+//            // GPU Instancing
+//            #pragma multi_compile_instancing
+//            #pragma multi_compile _ DOTS_INSTANCING_ON
+//
+//            #include "Packages/com.unity.render-pipelines.universal/Shaders/UnlitInput.hlsl"
+//            #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthOnlyPass.hlsl"
+//            ENDHLSL
+//        }
+        
+        // This pass is used when drawing to a _CameraNormalsTexture texture
+//        Pass
+//        {
+//            Name "DepthNormals"
+//            Tags{"LightMode" = "DepthNormals"}
+//
+//            ZWrite On
+//
+//            HLSLPROGRAM
+//            #pragma exclude_renderers gles gles3 glcore
+//            #pragma target 4.5
+//
+//            #pragma vertex DepthNormalsVertex
+//            #pragma fragment DepthNormalsFragment
+//
+//            // -------------------------------------
+//            // Material Keywords
+//            #pragma shader_feature_local _NORMALMAP
+//            #pragma shader_feature_local_fragment _ALPHATEST_ON
+//            #pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
+//
+//            //--------------------------------------
+//            // GPU Instancing
+//            #pragma multi_compile_instancing
+//            #pragma multi_compile _ DOTS_INSTANCING_ON
+//
+//            #include "Packages/com.unity.render-pipelines.universal/Shaders/SimpleLitInput.hlsl"
+//            #include "Packages/com.unity.render-pipelines.universal/Shaders/SimpleLitDepthNormalsPass.hlsl"
+//            ENDHLSL
+//        }
     }
+    
+    //Fallback  "Universal Render Pipeline/Unlit"
 }
